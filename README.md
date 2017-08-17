@@ -1,6 +1,7 @@
 # Model-Predictive-Control
 
-Student describes their model in detail. This includes the state, actuators and update equations.
+![]()
+
 ## The Overall Model of the Vehicle
 
 The vehicle is run within a 3D Unity program that resembles life-like driving behaviour.
