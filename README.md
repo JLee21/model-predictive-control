@@ -22,7 +22,7 @@ delta | the steering angle value in radians that is sent as the steering command
 
 Hence the `Predictive` in Model-Predictive-Control, the model's state is updated using the following kinematic equations.
 
-![update-eqn]()
+![update-eqn](https://github.com/JLee21/Model-Predictive-Control/blob/master/img/update-eqn.JPG)
 
 Taking into account everything mentioned above, the model's state can be predicted several time steps into the future.
 But how can we decide what Accelerator commands (`accel` value) and Steering commands (`delta` value) to send to the model?
@@ -32,7 +32,7 @@ Both of these commands affect how the model behaves.
 
 Note only is the model's state known at each time step, but also location markers in the middle of the track known as Way Points. At any given time step, the immediately next 6 Way Points are known. Since the Way Points lie in the middle of the track and evenly spaced, a third-order polynomial can be fitted to these six points. The resulting polynomial, or rather coeffecients of the polynomial, represent the reference trajectory for the model as this fitted trajectory aligns closely with the middle of the track's path. Now, not only is the ideal/reference path known but also the predicted path of the model. As discussed later, the driving commands (steering angle, accelertor) are optimized to fit the predicted path as closely to the ideal path as possible. Below are the equations used to calculate the cost of model from the ideal path.
 
-![cost-eqn]()
+![cost-eqn](https://github.com/JLee21/Model-Predictive-Control/blob/master/img/cost-eqn.JPG)
 
 1) `cte` is the Cross Track Error of the model as defined as the approximate distance from the model's center to the center of the lane. `coeffs` is the coeffiencitnes of the fitted third-order polynomial and `px` is the x position of the model (here, in relation to the car's reference). The function `polyeval` computes the y value at position `x`. This y values signifies how much lateral distance the model is from the center of the track.
 2) `depsi` is the desired heading (in radians) of the model. This value is calculated by taking the inverse tangent of the refernce trajectory at position `px`. Now, `epsi`, or the error of the model's current heading is calculated as the difference between the desired heading and the current heading.
