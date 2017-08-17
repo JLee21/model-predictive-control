@@ -106,6 +106,7 @@ int main() {
             ptsy_trans(i) = (ptsy[i]-py)*cos(0-psi) + (ptsx[i]-px)*sin(0-psi);
           }
 
+          // compute model predictions b/c of latency
           v *= 0.44704; // convert from miles/hour to meters/sec
           v += accel * LATENCY_SEC;
           psi = - v * delta / Lf * LATENCY_SEC;
