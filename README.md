@@ -40,6 +40,21 @@ If the student preprocesses waypoints, the vehicle state, and/or actuators prior
 
 ## Order of Operations
 
-To quickly summarize the Order of Operations, the model recives not only the state of itself (x, y positions, etc.) but also the immediately next six Way Points. The Way Points are then used to calculate the reference, or ideal, trajectory of the model. Next, the state of the model is predicted one time step into the future in order to compensate for the simulated latency that is common in real driving conditions (discussed in detail later). Now that the model's predicted state and reference trajectory is known
+To quickly summarize the Order of Operations, the model recives not only the state of itself (x, y positions, etc.) but also the immediately next six Way Points. The Way Points are then used to calculate the reference, or ideal, trajectory of the model (in actulatity, the referenced trajectory is the coeffeicnets to a fitted third-order polynomial). Next, the state of the model is predicted one time step into the future in order to compensate for the simulated latency that is common in real driving conditions (discussed in detail later). Now that the model's (latency-incorporated) state and reference trajectory is known the IPOPT solver is able to calculate the best driving commands so as to emmulate the reference trajectory.
 
 The student implements Model Predictive Control that handles a 100 millisecond latency. Student provides details on how they deal with latency.
+
+## Incorporating Simulated Latency
+
+In real driving conditions, when a driving command such as steering is issued by a drive-by-wire system there is inherent latency until the command is fully realized by the vehicle's component. In other words, the steering wheel may not actually acheive the commanded steering wheel angle until a fraction of a second into the future. As briefly mentioned earlier, latency compensation is acheived by predicting the model's state into the future by the same amount of latency time (in this case, 100 milliseconds). As a reminder, the model's state is sent to the IPOPT solver. The solver treats this state as the acutal current state of the model even though the state is a predicted state 100ms into the future. Below are the equations used to update the model's state to compensate for latency:
+
+```
+v *= 0.44704                          (1)
+v += accel * LATENCY_SEC              (2)
+psi = -v * delta / Lf * LATENCY_SEC   (3)
+px = v * LATENCY_SEC                  (4)
+```
+1) The velocity `v` in miles per hour is first converted to meters per second
+2) Here, the predicted velocity is approximated to change only in the forward direction of the car (x-direction). Given a small time step into the future, `LATENCY_SEC` and the current acceleration of the model, `accel`, the predicted velocity is calculated.
+3) `psi` is the bearing of the car in radians. `delta` is the current steering wheel command in radians and Lf is a constant related to the model's turning radius at constant velocity.
+4) Similar to the predicted velocity, the model's x position, `px`, is approximated to be entirely in the forward direction (x-direction). In addition, the model's y position is not calculated since the model does not shift laterally to any noticible degree.
