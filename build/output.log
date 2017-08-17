@@ -1,0 +1,45 @@
+Listening to port 4567
+Connected!!!
+
+******************************************************************************
+This program contains Ipopt, a library for large-scale nonlinear optimization.
+ Ipopt is released as open source code under the Eclipse Public License (EPL).
+         For more information visit http://projects.coin-or.org/Ipopt
+******************************************************************************
+
+Cost 3.49505e+06
+[steer] -0.486728[throt] -1[cte] 131.648[epsi] 0.00197547[cost]-0.212375[speed]0
+Cost 5.81908e+06
+[steer] -0.999999[throt] -1[cte] 183.258[epsi] 0.0526705[cost]-0.436332[speed]1.17483
+Cost 5.8509e+07
+[steer] -0.999999[throt] -1[cte] 1295.75[epsi] 17.3297[cost]-0.436332[speed]2.34964
+Cost 7.38397e+06
+[steer] -0.999999[throt] 1[cte] 201.146[epsi] 13.7239[cost]-0.436332[speed]0.82599
+Cost 1.53178e+07
+[steer] 0.999999[throt] 1[cte] -142.006[epsi] 16.1431[cost]0.436332[speed]0.944768
+Cost 2.51317e+27
+[steer] 0.070945[throt] 1[cte] -1.12097e+13[epsi] 1640.65[cost]0.0309556[speed]100.298
+Cost 2.82489e+17
+[steer] 0.999999[throt] 1[cte] -1.18711e+08[epsi] -1636.65[cost]0.436332[speed]100.246
+Cost 3.81273e+11
+[steer] 0.00415397[throt] 1[cte] 17060.4[epsi] -115.006[cost]0.00181251[speed]100.55
+Cost 4.66763e+15
+[steer] -0.999999[throt] 1[cte] -1.43999e+07[epsi] -1656.22[cost]-0.436332[speed]101.444
+Cost 1.53685e+22
+[steer] -0.0587387[throt] 1[cte] 2.77204e+10[epsi] -8.50601[cost]-0.0256296[speed]102.162
+Cost 9.14277e+15
+[steer] 0.999999[throt] 1[cte] -2.13654e+07[epsi] 1690.02[cost]0.436332[speed]103.319
+Cost 4.71468e+19
+[steer] -0.999999[throt] 1[cte] 1.45968e+09[epsi] 98.5052[cost]-0.436332[speed]104.256
+Cost 4.80108e+18
+[steer] -0.999999[throt] 1[cte] 4.74078e+08[epsi] -1742.35[cost]-0.436332[speed]106.521
+Cost 1.48953e+16
+[steer] 0.999999[throt] 1[cte] 2.58978e+07[epsi] 1745.28[cost]0.436332[speed]106.893
+Cost 4.19345e+13
+[steer] -0.0420789[throt] 1[cte] -1.44801e+06[epsi] 1755.54[cost]-0.0183604[speed]107.329
+Cost 1.97029e+11
+[steer] 0.0087234[throt] 1[cte] -90.0332[epsi] -1754.58[cost]0.0038063[speed]107.462
+Cost 3.73101e+25
+[steer] -0.999999[throt] 1[cte] -1.36584e+12[epsi] 76.0556[cost]-0.436332[speed]108.317
+Cost 4.9819e+11
+[steer] -0.999999[throt] 1[cte] -1417.33[epsi] -14.0155[cost]-0.436332[speed]109.328
