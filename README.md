@@ -30,12 +30,16 @@ Both of these commands affect how the model behaves.
 
 Student discusses the reasoning behind the chosen N (timestep length) and dt (elapsed duration between timesteps) values. Additionally the student details the previous values tried.
 
-## Tuning the Prediction Amount
+## Tuning How Much To Predict in the Future
 
 The model's predicted state becomes less accurate the further it is predicted into the future.
 Also, the model's predicted state is only calculated at discrete points in time. The variables `N` and `dt` address how far the model is predicited into the future. `dt` is the length of time in between each calculated state. `N` is the number of discrete points in time to calculate the model's state. Now the total time into the future is known as `N * dt`. The final chosen `dt` was empirically found to be 200 milliseconds. A value too low would result in unnoticble improvement at the cost of extra computation. With a value too high, the model would often appear sluggish in its reaction to turns causing the model to overreact/overcompensate with a stark steering command.
 Similarirly to the `N` value, a high value showed no added handling performance as the accuracy of the model's predicted state dimensioned further in time. Too low of a value may not allow to 'see' several timesteps into the next sharp turn. A value of `N` is 10.
 
 If the student preprocesses waypoints, the vehicle state, and/or actuators prior to the MPC procedure it is described.
+
+## Order of Operations
+
+To quickly summarize the Order of Operations, the model recives not only the state of itself (x, y positions, etc.) but also the immediately next six Way Points. The Way Points are then used to calculate the reference, or ideal, trajectory of the model. Next, the state of the model is predicted one time step into the future in order to compensate for the simulated latency that is common in real driving conditions (discussed in detail later). Now that the model's predicted state and reference trajectory is known
 
 The student implements Model Predictive Control that handles a 100 millisecond latency. Student provides details on how they deal with latency.
