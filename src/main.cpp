@@ -20,6 +20,7 @@ double deg2rad(double x) { return x * pi() / 180; }
 double rad2deg(double x) { return x * 180 / pi(); }
 const int MAXSTEER_DEG = 25;
 const double LATENCY_SEC = 0.1; // in seconds
+const double Lf = 2.67;
 
 // Checks if the SocketIO event has JSON data.
 // If there is data the JSON object in string format will be returned,
@@ -45,7 +46,7 @@ double polyeval(Eigen::VectorXd coeffs, double x) {
   return result;
 }
 
-// Fit a polynomial. dapted from http://bit.ly/2hAf75b
+// Fit a polynomial. adapted from http://bit.ly/2hAf75b
 Eigen::VectorXd polyfit(Eigen::VectorXd xvals, Eigen::VectorXd yvals,
                         int order) {
   assert(xvals.size() == yvals.size());
@@ -93,9 +94,8 @@ int main() {
           double px = j[1]["x"];
           double py = j[1]["y"];
           double psi = j[1]["psi"];
-          double psi_u = j[1]["psi_unity"];
           double v = j[1]["speed"];
-          double delta = j[1]["steering_angle"]; // this isn't received it's sent
+          double delta = j[1]["steering_angle"];
           double accel = j[1]["throttle"];
 
           // transform waypoint coords from global to vehicle
@@ -106,19 +106,10 @@ int main() {
             ptsy_trans(i) = (ptsy[i]-py)*cos(0-psi) + (ptsx[i]-px)*sin(0-psi);
           }
 
-          printf("\n[BEFORE] [px] %+6.2f [py] %+6.2f [psi] %+6.3f "
-            "[psi_u] %+6.2f [delta] %+6.5f "
-            "[v] %+6.3f [accel] %+6.2f\n", px, py, psi, psi_u, delta, v, accel);
-
-          double Lf = 2.67; // taken from MPC.CppAD
-          v *= 0.44704; // to go from miles/hour to meters/sec
+          v *= 0.44704; // convert from miles/hour to meters/sec
           v += accel * LATENCY_SEC;
           psi = - v * delta / Lf * LATENCY_SEC;
           px = v * LATENCY_SEC;
-
-          printf("[AFTER]  [px] %+6.2f [py] %+6.2f [psi] %+6.3f "
-            "[psi_u] %+6.2f [delta] %+6.5f "
-            "[v m/s] %+6.3f [accel] %+6.2f\n", px, py, psi, psi_u, delta, v, accel);
 
           // fit a third order polynomial to the 6 given waypoints
           Eigen::VectorXd coeffs = polyfit(ptsx_trans, ptsy_trans, 3);
@@ -127,13 +118,11 @@ int main() {
           // compute orientation error
           double despsi = atan(3*coeffs[3]*px*px + 2*coeffs[2]*px + coeffs[1]);
           double epsi = despsi - psi;
-          // double epsi = -atan(coeffs[1]);
-          printf("[cte] %+6.2f [despi] %+6.2f [epsi] %+6.2f\n", cte, despsi, epsi);
           // ready the state vars for mpc.Solve
           Eigen::VectorXd state(6);
+          state << px, 0 , psi, v, cte, epsi;
 
-          state << px,0,psi, v, cte, epsi;
-
+          // compute the ideal driving commands using IPOPT
           auto vars = mpc.Solve(state, coeffs);
 
           // Calculate steering angle and throttle using MPC.
@@ -180,31 +169,10 @@ int main() {
 
           auto msg = "42[\"steer\"," + msgJson.dump() + "]";
 
-          // log output
-          std::cout << "[steer] " << steer_value
-                    << " [steer deg] " << vars[0]
-                    << " [throt] " << throttle_value
-                    << " [cte] " << cte << " [epsi] " << epsi
-                    << " [delta] " << delta
-                    << "[speed] "<< v << std::endl;
-
-          // std::cout << msg << std::endl;
           // Latency
           // The purpose is to mimic real driving conditions where
-          // the car does actuate the commands instantly.
-          //
-          // Feel free to play around with this value but should be to drive
-          // around the track with 100ms latency.
-          //
-          // NOTE: REMEMBER TO SET THIS TO 100 MILLISECONDS BEFORE
-          // SUBMITTING.
+          // the car does not actuate the commands instantly.
           this_thread::sleep_for(chrono::milliseconds(100));
-
-          // restart
-          if (abs(cte) > 100){
-            std::string msg = "42[\"reset\",{}]";
-            ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);
-          }
 
           ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);
         }

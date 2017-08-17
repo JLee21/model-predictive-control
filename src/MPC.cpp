@@ -41,19 +41,15 @@ size_t a_start      = delta_start + N - 1;
 const double ref_v = 40;
 
 // C O S T S  M U L T I P L I E R S
-double a0 = 20;
-double a1 = 20;
-double a2 = 0.2;
-double b0 = 9;
-double b1 = 11;
-double c0 = 12;
-double c1 = 1;
+const double a0 = 20;
+const double a1 = 20;
+const double a2 = 0.2;
+const double b0 = 9;
+const double b1 = 11;
+const double c0 = 12;
+const double c1 = 1;
 
 class FG_eval {
-
-  // std::cout <<"[a0]"<<a0<<"[a1]"<<a1<<"[a2]"<<a2
-  //           <<"[b0]"<<b0<<"[b1]"<<b1
-  //           <<"[c0]"<<c0<<"[c1]"<<c1<<std::endl;
 
  public:
   // Fitted polynomial coefficients
@@ -265,7 +261,6 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs) {
 
   // Cost
   auto cost = solution.obj_value;
-  // std::cout << "Cost " << cost << std::endl;
 
   // return the x and y values of the best solution
   vector<double> result;
