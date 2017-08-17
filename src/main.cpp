@@ -109,7 +109,7 @@ int main() {
           // compute model predictions b/c of latency
           v *= 0.44704; // convert from miles/hour to meters/sec
           v += accel * LATENCY_SEC;
-          psi = - v * delta / Lf * LATENCY_SEC;
+          psi = - v * LATENCY_SEC * delta / Lf;
           px = v * LATENCY_SEC;
 
           // fit a third order polynomial to the 6 given waypoints
