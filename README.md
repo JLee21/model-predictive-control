@@ -1,6 +1,6 @@
 # Model-Predictive-Control
 
-![]()
+![gif](https://github.com/JLee21/Model-Predictive-Control/blob/master/img/gif.gif)
 
 ## The Overall Model of the Vehicle
 
