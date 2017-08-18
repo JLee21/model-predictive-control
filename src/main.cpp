@@ -109,34 +109,25 @@ int main() {
           // fit a third order polynomial to the 6 given waypoints
           Eigen::VectorXd coeffs = polyfit(ptsx_trans, ptsy_trans, 3);
 
-          // compute errors of the model
+          /*
+          compute errors of the model
+          the following assumes that px=py=0 since the model's position and yaw
+          is 'tared'
+           */
           double cte = polyeval(coeffs, 0);
           double epsi = -atan(coeffs[1]);
 
-          // compute model predictions b/c of latency
-          // v *= 0.44704; // convert from miles/hour to meters/sec
-          // v += accel * LATENCY_SEC;
-          // psi = - v * delta / Lf * LATENCY_SEC;
-          // px = v * LATENCY_SEC;
-
+          // compute model predictions for the sake of latency
           v *= 0.44704; // convert from miles/hour to meters/sec
           px = v * LATENCY_SEC;
           py = 0; // assume zero of very little lateral movement
-          psi = -v * delta * LATENCY_SEC / Lf;
+          psi = -v * delta * LATENCY_SEC / Lf; // `-` b/c str cmd is flipped in Unity
           epsi += epsi + psi;
           cte += v * sin(epsi) * LATENCY_SEC;
           v += accel * LATENCY_SEC;
 
-          // fit a third order polynomial to the 6 given waypoints
-          // Eigen::VectorXd coeffs = polyfit(ptsx_trans, ptsy_trans, 3);
-          // compute the cross track errors
-          // double cte = polyeval(coeffs, px);
-          // compute orientation error
-          // double despsi = atan(3*coeffs[3]*px*px + 2*coeffs[2]*px + coeffs[1]);
-          // double epsi = despsi - psi;
-          // ready the state vars for mpc.Solve
           Eigen::VectorXd state(6);
-          state << px, 0 , psi, v, cte, epsi;
+          state << px, py , psi, v, cte, epsi;
 
           // compute the ideal driving commands using IPOPT
           auto vars = mpc.Solve(state, coeffs);

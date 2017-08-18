@@ -43,7 +43,7 @@ const double ref_v = 40;
 // C O S T S  M U L T I P L I E R S
 const double a0 = 20;
 const double a1 = 20;
-const double a2 = 0.4;
+const double a2 = 0.3;
 const double b0 = 9;
 const double b1 = 11;
 const double c0 = 12;
