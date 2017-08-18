@@ -122,7 +122,7 @@ int main() {
           px = v * LATENCY_SEC;
           py = 0; // assume zero or very little lateral movement
           psi = -v * delta * LATENCY_SEC / Lf; // `-` b/c str cmd is flipped in Unity
-          epsi += epsi + psi;
+          epsi += psi;
           cte += v * sin(epsi) * LATENCY_SEC;
           v += accel * LATENCY_SEC;
 
