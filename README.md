@@ -4,7 +4,7 @@
 
 ## The Overall Model of the Vehicle
 
-The vehicle is run within a 3D Unity program that resembles life-like driving behavior.
+The vehicle runs within a 3D Unity program that resembles life-like driving behavior.
 The *state* of the Model consists of the following:
 
 State Variables | Description
