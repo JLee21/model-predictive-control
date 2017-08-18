@@ -120,7 +120,7 @@ int main() {
           // compute model predictions for the sake of latency
           v *= 0.44704; // convert from miles/hour to meters/sec
           px = v * LATENCY_SEC;
-          py = 0; // assume zero of very little lateral movement
+          py = 0; // assume zero or very little lateral movement
           psi = -v * delta * LATENCY_SEC / Lf; // `-` b/c str cmd is flipped in Unity
           epsi += epsi + psi;
           cte += v * sin(epsi) * LATENCY_SEC;
